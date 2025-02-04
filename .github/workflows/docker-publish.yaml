@@ -35,6 +35,8 @@ jobs:
       - name: Create Git tag for main branch
         if: github.ref == 'refs/heads/main'
         run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
           VERSION=${{ steps.version.outputs.version }}
           git tag -a "v${VERSION}" -m "Automated tag for version ${VERSION}"
           git push origin "v${VERSION}"
