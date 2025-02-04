@@ -24,7 +24,14 @@ jobs:
       
       - name: Generate version
         id: version
+      - name: Create Git tag for main branch
+        if: github.ref == 'refs/heads/main'
         run: |
+          VERSION=${{ steps.version.outputs.version }}
+          git tag -a "v${VERSION}" -m "Automated tag for version ${VERSION}"
+          git push origin "v${VERSION}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/v}
           else
@@ -40,6 +47,7 @@ jobs:
           tags: |
             type=raw,value=${{ steps.version.outputs.version }}
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+            type=raw,value=${{ steps.version.outputs.version }}-dev,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
       - name: Extract metadata for Postgres
         id: meta-postgres
@@ -49,6 +57,7 @@ jobs:
           tags: |
             type=raw,value=${{ steps.version.outputs.version }}
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+            type=raw,value=${{ steps.version.outputs.version }}-dev,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
       
       - name: Build and push Twenty Docker image
         uses: docker/build-push-action@v5
