@@ -36,7 +36,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: your-registry/twenty
+          images: proceda/twenty
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
