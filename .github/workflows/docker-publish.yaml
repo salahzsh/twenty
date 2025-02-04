@@ -22,8 +22,8 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: Extract metadata
-        id: meta
+      - name: Extract metadata for Twenty
+        id: meta-twenty
         uses: docker/metadata-action@v5
         with:
           images: proceda/twenty
@@ -31,12 +31,31 @@ jobs:
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=sha
+
+      - name: Extract metadata for Postgres
+        id: meta-postgres
+        uses: docker/metadata-action@v5
+        with:
+          images: proceda/twenty-postgres-spilo
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha
       
-      - name: Build and push Docker image
+      - name: Build and push Twenty Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./packages/twenty-docker/twenty/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta-twenty.outputs.tags }}
+          labels: ${{ steps.meta-twenty.outputs.labels }}
+
+      - name: Build and push Postgres Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./packages/twenty-docker/twenty-postgres-spilo/Dockerfile
+          push: true
+          tags: ${{ steps.meta-postgres.outputs.tags }}
+          labels: ${{ steps.meta-postgres.outputs.labels }}
