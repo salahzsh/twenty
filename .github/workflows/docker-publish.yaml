@@ -40,12 +40,6 @@ jobs:
           git push origin "v${VERSION}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/v}
-          else
-            VERSION=$(date +'%Y%m%d')-$(git rev-parse --short HEAD)
-          fi
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
       
       - name: Extract metadata for Twenty
         id: meta-twenty
