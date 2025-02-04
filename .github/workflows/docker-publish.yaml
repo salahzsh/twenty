@@ -22,15 +22,24 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       
+      - name: Generate version
+        id: version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=$(date +'%Y%m%d')-$(git rev-parse --short HEAD)
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      
       - name: Extract metadata for Twenty
         id: meta-twenty
         uses: docker/metadata-action@v5
         with:
           images: proceda/twenty
           tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=sha
+            type=raw,value=${{ steps.version.outputs.version }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
       - name: Extract metadata for Postgres
         id: meta-postgres
@@ -38,9 +47,8 @@ jobs:
         with:
           images: proceda/twenty-postgres-spilo
           tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=sha
+            type=raw,value=${{ steps.version.outputs.version }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
       
       - name: Build and push Twenty Docker image
         uses: docker/build-push-action@v5
@@ -59,3 +67,11 @@ jobs:
           push: true
           tags: ${{ steps.meta-postgres.outputs.tags }}
           labels: ${{ steps.meta-postgres.outputs.labels }}
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: false
