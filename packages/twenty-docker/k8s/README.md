@@ -21,7 +21,7 @@ Clone the repository to your local machine:
 
 ``` bash
 git clone https://github.com/twentyhq/twenty.git
-cd twentycrm/packages/twenty-docker/k8s
+cd proceda/packages/twenty-docker/k8s
 ```
 
 ### Step 2: Customize the Manifests and Terraform Files

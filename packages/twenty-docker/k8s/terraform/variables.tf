@@ -23,13 +23,13 @@ variable "twentycrm_app_name" {
 
 variable "twentycrm_server_image" {
   type        = string
-  default     = "twentycrm/twenty:latest"
+  default     = "proceda/twenty:latest"
   description = "TwentyCRM server image for the server deployment. This defaults to latest. This value is also used for the workers image."
 }
 
 variable "twentycrm_db_image" {
   type        = string
-  default     = "twentycrm/twenty-postgres-spilo:latest"
+  default     = "proceda/twenty-postgres-spilo:latest"
   description = "TwentyCRM image for database deployment. This defaults to latest."
 }
 

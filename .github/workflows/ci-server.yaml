@@ -31,7 +31,7 @@ jobs:
       NX_REJECT_UNKNOWN_LOCAL_CACHE: 0
     services:
       postgres:
-        image: twentycrm/twenty-postgres-spilo
+        image: proceda/twenty-postgres-spilo
         env:
           PGUSER_SUPERUSER: postgres
           PGPASSWORD_SUPERUSER: postgres
@@ -144,7 +144,7 @@ jobs:
     needs: server-setup
     services:
       postgres:
-        image: twentycrm/twenty-postgres-spilo
+        image: proceda/twenty-postgres-spilo
         env:
           PGUSER_SUPERUSER: postgres
           PGPASSWORD_SUPERUSER: postgres
