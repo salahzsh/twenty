@@ -27,14 +27,14 @@ jobs:
         run: |
           export TAG=${{ github.sha }}
           
-          # Build and push server image
-          docker build -t proceda/twenty:${TAG} ./packages/twenty-docker/twenty
-          docker push proceda/twenty:${TAG}
-          
           # Build and push postgres image
           docker build -t proceda/twenty-postgres-spilo:${TAG} ./packages/twenty-docker/twenty-postgres-spilo
           docker push proceda/twenty-postgres-spilo:${TAG}
           
+          # Build and push server image
+          docker build -t proceda/twenty:${TAG} -f ./packages/twenty-docker/twenty/Dockerfile .
+          docker push proceda/twenty:${TAG}
+
           # Tag and push latest
           docker tag proceda/twenty:${TAG} proceda/twenty:latest
           docker tag proceda/twenty-postgres-spilo:${TAG} proceda/twenty-postgres-spilo:latest
