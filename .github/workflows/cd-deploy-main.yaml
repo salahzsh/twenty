@@ -20,14 +20,17 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push with docker-compose
+      - name: Build and push images
         run: |
-          # Set the TAG environment variable to the commit SHA
           export TAG=${{ github.sha }}
           
-          # Build and push the images
-          docker compose -f packages/twenty-docker/docker-compose.yml build
-          docker compose -f packages/twenty-docker/docker-compose.yml push
+          # Build and push server image
+          docker build -t proceda/twenty:${TAG} .
+          docker push proceda/twenty:${TAG}
+          
+          # Build and push postgres image
+          docker build -t proceda/twenty-postgres-spilo:${TAG} ./packages/twenty-postgres
+          docker push proceda/twenty-postgres-spilo:${TAG}
           
           # Tag and push latest
           docker tag proceda/twenty:${TAG} proceda/twenty:latest
