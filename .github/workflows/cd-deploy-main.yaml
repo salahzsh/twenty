@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Get all history
+          submodules: recursive  # Get submodules if any
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
