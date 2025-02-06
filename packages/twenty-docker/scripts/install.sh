@@ -45,7 +45,9 @@ trap on_exit EXIT
 
 # Use environment variables VERSION and BRANCH, with defaults if not set
 version=${VERSION:-$(curl -s "https://hub.docker.com/v2/repositories/proceda/twenty/tags" | grep -o '"name":"[^"]*"' | grep -v 'latest' | cut -d'"' -f4 | sort -V | tail -n1)}
+version=latest
 branch=${BRANCH:-$(curl -s https://api.github.com/repos/salahzsh/twenty/tags | grep '"name":' | head -n 1 | cut -d '"' -f 4)}
+branch=main
 
 echo "🚀 Using docker version $version and Github branch $branch"
 
