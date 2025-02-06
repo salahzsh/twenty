@@ -222,7 +222,7 @@ msgid "Book a Call"
 msgstr "통화 예약"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx:23
-msgid "By using Twenty, you agree to the"
+msgid "By using Proceda, you agree to the"
 msgstr "Twenty를 사용함으로써 귀하는 다음에 동의합니다"
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterValue.tsx:73
