@@ -1,0 +1,3 @@
+npx nx run twenty-front:lingui:extract
+npx nx run twenty-front:lingui:compile
+git add .
